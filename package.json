@@ -4,7 +4,8 @@
   "description": "King's Affair Website from 2017",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.config.js --progress --colors",
+    "build-watch": "webpack --config webpack.config.js --progress --colors --watch"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,11 @@
     "react-dom": "^15.5.3",
     "webpack": "^2.3.3",
     "webpack-bundle-tracker": "^0.2.0"
+  },
+  "dependencies": {
+    "material-ui": "^0.17.3",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
+    "react-tap-event-plugin": "^2.0.1"
   }
 }

@@ -1,6 +1,20 @@
 {% load render_bundle from webpack_loader %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en_GB">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>King's Affair: Night Mode</title>
 
-<div id="container"></div>
+        <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1'>
 
-{% render_bundle 'main' %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+    </head>
+    <body>
+        <div id="app"></div>
+        {% render_bundle 'main' %}
+    </body>
+</html>
+
 
