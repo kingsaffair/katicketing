@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.conf.urls import url, include
 
 from tickets.views import buy_ticket
+from nightmode.views import night_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('ucamwebauth.urls')),
-    url(r'^tickets/buy', buy_ticket)
+    url(r'^tickets/buy', buy_ticket),
+    url(r'^nightmode', night_view)
 ]
 
 if settings.DEBUG:
