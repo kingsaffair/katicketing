@@ -1,0 +1,34 @@
+** THIS IS AN AUTOMATED EMAIL **
+
+We have not yet received your payment for King's Affair 2017, as of 30th of
+March. If you still wish to purchase these tickets, you must reply to this
+email BEFORE 10pm on SATURDAY 8th APRIL stating your intention to pay for them.
+
+Payment must then be received by bank transfer no later than 12pm NOON on SUNDAY
+9th APRIL.
+
+Please send a bank transfer to King's Affair for the amount of £{{ amount }}, with
+the following reference:
+
+T{{ amount }}-{{ crsid }}
+
+Bank Transfers should be sent to:
+    Sort Code: 60-04-23
+    Account Number: 24175439
+
+Failure to meet either of these deadlines may result in your tickets being
+cancelled and re-allocated to people on the waiting list. If for any reason
+you cannot make these deadlines, you must reply by Saturday 8th stating your
+reasons for this.
+
+** YOUR TICKETS **
+
+{% for ticket in tickets %}
+{{ ticket.fname }} {{ ticket.lname }}: {% if ticket.primary_ticket %}(Primary Ticket){% endif %}
+    {{ ticket.type_name }}
+    {% if ticket.premium %}Queue Jump{% endif %}
+
+{% endfor %}
+
+Further details can be found on the website at
+http://www.kingsaffair.com/tickets/

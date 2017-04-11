@@ -1,0 +1,77 @@
+** THIS IS AN AUTOMATED EMAIL **
+
+Dear {{ fname }}
+{% if expected_amount == amount %}
+Your payment for King's Affair 2017 has been received by bank transfer. Thank you
+for your payment.
+
+This email contains information about name changes, ticket collection and
+identification required to enter the King's Affair.
+
+* Name Changes *
+The cost of name changes will rise to £20 on Saturday 1st April.
+
+To request a name change, the owner of the *principal ticket* will need to log
+into http://www.kingsaffair.com/tickets/ and request the name change.
+
+Name changes can only be requested on guest tickets. The *principal ticket*
+cannot be changed unless there are exceptional circumstances.
+
+If you believe this applies, please email ticketing@kingsaffair.com with the
+following information:
+
+ - the crsID of the principal ticket holder;
+ - the name of the new owner; and
+ - the crsID of the new owner.
+
+* Ticket Collection *
+Information about ticket collection will be released soon over our Facebook page
+https://www.facebook.com/thekingsaffair.
+{% elif expected_amount > amount %}
+We have not yet received the total amount for your tickets for King's Affair
+2017. We were expecting you to pay £{{ expected_amount }}, but we've only received
+£{{ amount }} so far. Please email ticketing@kingsaffair.com BEFORE 10pm on SATURDAY
+8th APRIL so that we can figure this out.
+{% elif amount == 0 %}
+We have not yet received your payment for King's Affair 2017, as of 30th of
+March. If you still wish to purchase these tickets, you must reply to this
+email BEFORE 10pm on SATURDAY 8th APRIL stating your intention to pay for them.
+
+Payment must then be received by bank transfer no later than 12pm NOON on SUNDAY
+9th APRIL.
+
+Please send a bank transfer to King's Affair for the amount of £{{ amount }}, with
+the following reference:
+
+T{{ amount }}-{{ crsid }}
+
+Bank Transfers should be sent to:
+    Sort Code: 60-04-23
+    Account Number: 24175439
+
+Failure to meet either of these deadlines may result in your tickets being
+cancelled and re-allocated to people on the waiting list. If for any reason
+you cannot make these deadlines, you must reply by Saturday 8th stating your
+reasons for this.
+{% else %}
+whattt?? This is invalid...
+{% endif %}
+** YOUR TICKETS **
+{% for ticket in tickets %}
+{{ ticket.fname }} {{ ticket.lname }}: {% if ticket.primary_ticket %}(Primary Ticket){% endif %}
+    {{ ticket.type_name }}
+{% endfor %}
+Total Amount: £{{ expected_amount }}
+Paid Amount: £{{ amount }}
+
+Thanks,
+The King's Affair Committee :)
+
+
+***
+
+Further details can be found on the website at
+http://www.kingsaffair.com/tickets/
+
+If there's anything wrong with the information in this email, please reply
+to ticketing@kingsaffair.com.
