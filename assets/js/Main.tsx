@@ -22,13 +22,14 @@ const styles = {
     },
 };
 
-export interface MainState { open: boolean, guests: IGuest[], query: any };
+export interface MainState { open: boolean, guests: IGuest[], selectedId?: Number, query: any };
 
 export class Main extends React.Component<undefined, MainState> {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
+            selectedId: null,
             query: null,
             open: false,
             guests: []
@@ -56,6 +57,16 @@ export class Main extends React.Component<undefined, MainState> {
         });
     }
 
+    selected = (id) => {
+        this.setState({
+            selectedId: id
+        });
+    }
+
+    showDetail = () => {
+        console.log(this.state.selectedId);
+    }
+
     render() {
         return (
             <div>
@@ -65,8 +76,11 @@ export class Main extends React.Component<undefined, MainState> {
                         <ToolbarGroup>
                             <TextField hintText="Search" onChange={(evt, val) => this.sync(val)} />
                         </ToolbarGroup>
+                        <ToolbarGroup>
+                            <RaisedButton label="View Details" primary={true} disabled={!this.state.selectedId} onTouchTap={this.showDetail} />
+                        </ToolbarGroup>
                     </Toolbar>
-                    <GuestList guests={this.state.guests} />
+                    <GuestList guests={this.state.guests} guestSelected={this.selected} />
                 </div>
             </div>
         )

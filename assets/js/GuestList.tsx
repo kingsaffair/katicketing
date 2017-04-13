@@ -9,7 +9,8 @@ import {
     TableRowColumn
 } from 'material-ui/Table';
 
-import { FAIcon } from './FAIcon';
+import FontIcon from 'material-ui/FontIcon';
+import {green500} from 'material-ui/styles/colors'
 
 // this needs to be updated relative to the Django stuff at some point
 export enum Category {
@@ -25,15 +26,27 @@ export interface IGuest {
     lname: String
     category: String
     id: Number
+    reentry_allowed: Boolean
 }
+
+type GuestSelectedCallback = (guests: IGuest[]) => void;
 
 export interface IGuestListProps {
     guests: IGuest[]
+    guestSelected: GuestSelectedCallback
 }
 
 export class GuestList extends React.Component < IGuestListProps, undefined > {
     constructor(props, context) {
         super(props, context);
+    }
+
+    selected = (row : string | number[]) => {
+        if (row == 'all' || row.length != 1) {
+            this.props.guestSelected(null);
+        } else {
+            this.props.guestSelected(this.props.guests[row[0]].id);
+        }
     }
 
     render() {
@@ -42,17 +55,19 @@ export class GuestList extends React.Component < IGuestListProps, undefined > {
                 <TableRow key={guest.id}>
                     <TableRowColumn>{guest.fname} {guest.lname}</TableRowColumn>
                     <TableRowColumn>{guest.category}</TableRowColumn>
+                    <TableRowColumn>{guest.reentry_allowed ? <FontIcon className="material-icons" color={green500}>check_circle</FontIcon> : null}</TableRowColumn>
                 </TableRow>
             );
         });
 
         return (
             <div>
-                <Table>
+                <Table onRowSelection={this.selected}>
                     <TableHeader>
                         <TableRow>
                             <TableHeaderColumn>Name</TableHeaderColumn>
                             <TableHeaderColumn>Category</TableHeaderColumn>
+                            <TableHeaderColumn>Reentry?</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
