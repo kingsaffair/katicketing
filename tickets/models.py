@@ -1,5 +1,10 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
+
+def gen_hash():
+    return uuid.uuid4()[:8]
 
 class Guest(models.Model):
     STRIPE = 'ST'
@@ -33,6 +38,8 @@ class Guest(models.Model):
     fname = models.CharField(max_length=100)
     lname = models.CharField(max_length=100)
 
+    hash = models.CharField(max_length=20, default=gen_hash, editable=False)
+
     reentry_allowed = models.BooleanField(default=False)
     category = models.CharField(max_length=5, choices=CATEGORY_CHOICES)
 
@@ -40,6 +47,7 @@ class Guest(models.Model):
     waiting = models.BooleanField(default=True)
 
     payment_method = models.CharField(max_length=5, choices=PAYMENT_CHOICES)
+    qr_code = models.ImageField(upload_to='user_static', default=None, null=True, blank=True)
 
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True)
 

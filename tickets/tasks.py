@@ -1,6 +1,8 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
 
+import qrcode
+
 from celery import shared_task
 from django.db import transaction
 
@@ -29,3 +31,13 @@ def process_tickets(self, new_tickets):
 
             t.save()
             available_tickets -= 1
+
+@shared_task(bind=True)
+def generate_qrcode(self, guest, hash):
+    # TODO: use Amazon S3 or something to store these
+    img = qrcode.make('https://beta.kingsaffair.com/checkin/%s' % hash)
+    img.save('qr-%s.png' % hash)
+
+    guest = Guest.objects.get(id=guest)
+    guest.qr_code.name = 'qr-%s.png' % hash
+    guest.save()

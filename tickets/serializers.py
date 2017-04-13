@@ -16,4 +16,4 @@ class GuestSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Guest
-        fields = ('id', 'owner', 'fname', 'lname', 'category', 'reentry_allowed', 'price', 'waiting', 'payment_method', 'parent')
+        fields = ('id', 'owner', 'fname', 'lname', 'category', 'reentry_allowed', 'price', 'waiting', 'payment_method', 'parent', 'hash')
