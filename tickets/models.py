@@ -1,21 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Ticket(models.Model):
+class Guest(models.Model):
     STRIPE = 'ST'
     BANK_TRANSFER = 'BT'
-    COLLEGE_BILL = 'CB'
+    COLLEGE_BILL = 'CB' 
+    NONE = 'NO'
 
     PAYMENT_CHOICES = [
         (STRIPE, 'Stripe'),
         (BANK_TRANSFER, 'Bank Transfer'),
-        (COLLEGE_BILL, 'College Bill')
+        (COLLEGE_BILL, 'College Bill'),
+        (NONE, 'None')
+    ]
+
+    GENERAL = 'GA'
+    WORKER = 'WK'
+    MUSICIAN = 'MU'
+    COMMITTEE = 'CO'
+    SHADOW = 'SC'
+
+    CATEGORY_CHOICES = [
+        (GENERAL, 'General Admission'),
+        (WORKER, 'Worker'),
+        (MUSICIAN, 'Musician'),
+        (COMMITTEE, 'Committee'),
+        (SHADOW, 'Shadow Committee')
     ]
 
     owner = models.ForeignKey(User)
 
     fname = models.CharField(max_length=100)
     lname = models.CharField(max_length=100)
+
+    reentry_allowed = models.BooleanField(default=False)
+    category = models.CharField(max_length=5, choices=CATEGORY_CHOICES)
 
     price = models.DecimalField(max_digits=5, decimal_places=2)
     waiting = models.BooleanField(default=True)
@@ -26,23 +45,6 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.fname + ' ' + self.lname
-
-    def to_dict(self):
-        return {
-            'owner': self.owner.pk,
-            'fname': self.fname,
-            'lname': self.lname,
-            'price': self.price,
-            'waiting': self.waiting,
-            'payment_method': self.payment_method,
-            'parent': None if self.parent is None else self.parent.pk
-        }
-
-    @staticmethod
-    def from_dict(d):
-        d['owner'] = User.objects.get(pk=d['owner'])
-        d['parent'] = None if d['parent'] is None else Ticket.objects.get(pk=d['parent'])
-        return Ticket(**d)
 
     class Meta:
         permissions = [

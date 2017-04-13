@@ -14,25 +14,16 @@ module.exports = {
     plugins: [
         new BundleTracker({
             filename: './webpack-stats.json'
-        }),
-
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery'
         })
     ],
 
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.tsx?$/,
 
                 exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['react']
-                }
+                loader: 'awesome-typescript-loader',
             }
         ]
     },
@@ -40,7 +31,7 @@ module.exports = {
     resolve: {
         modules: ['node_modules'],
 
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
 
     devtool: 'source-map'

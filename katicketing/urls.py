@@ -17,13 +17,19 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
 
-from tickets.views import buy_ticket
+from rest_framework import routers
+
+from tickets.views import UserViewSet, GuestViewSet
 from nightmode.views import night_view
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'guests', GuestViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('ucamwebauth.urls')),
-    url(r'^tickets/buy', buy_ticket),
+    url(r'^api/', include(router.urls)),
     url(r'^nightmode', night_view)
 ]
 
