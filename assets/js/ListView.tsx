@@ -3,24 +3,12 @@ import * as React from 'react';
 import axios from 'axios';
 
 // Material UI
-import AppBar from 'material-ui/AppBar';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import FontIcon from 'material-ui/FontIcon';
 
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 
-import {EventCard} from './EventCard';
 import {GuestList, IGuest} from './GuestList';
-
-const styles = {
-    container: {
-        padding: 10
-    }
-};
 
 export interface MainState {
     open : boolean,
@@ -46,12 +34,9 @@ export class ListView extends React.Component <undefined, MainState> {
     }
 
     sync = (text) => {
-        if (this.state.query) {
-            this
-                .state
-                .query
-                .cancel();
-        }
+        // if (this.state.query) {
+        //     this.state.query.cancel();
+        // }
 
         let query = axios.get(`/api/guests?search=${text}`);
         query.then(response => {
@@ -81,8 +66,7 @@ export class ListView extends React.Component <undefined, MainState> {
                             label="View Details"
                             primary={true}
                             disabled={!this.state.selectedId}
-                            onTouchTap={this.showDetail}
-                            icon={< FontIcon className = "fa fa-ticket" />}/>
+                            onTouchTap={this.showDetail} />
                     </ToolbarGroup>
                 </Toolbar>
                 <GuestList guests={this.state.guests} guestSelected={this.selected}/>

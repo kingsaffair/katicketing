@@ -37,7 +37,7 @@ export interface IGuestListProps {
     guestSelected: GuestSelectedCallback
 }
 
-export class GuestList extends React.Component < IGuestListProps, undefined > {
+export class GuestList extends React.Component <IGuestListProps, undefined> {
     constructor(props, context) {
         super(props, context);
     }
