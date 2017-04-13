@@ -18,16 +18,13 @@ class GuestViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['GET'])
     def qr(self, request, pk=None):
         """
-        Lazily generate a QR code if one does not exist.
+        Lazily generate a QR code if one does not exist. If the QR code exists,
+        return a URL pointing to it.
         """
         guest = self.get_object()
-
         result = {}
 
-        print('hello ' + str(guest.qr_code))
-
         if not guest.qr_code:
-            # make it
             # TODO: provide status feedback
             generate_qrcode.delay(guest.id, guest.hash)
             result['status'] = 'generating'

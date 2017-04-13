@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 def gen_hash():
-    return uuid.uuid4()[:8]
+    return str(uuid.uuid4())[:8]
 
 class Guest(models.Model):
     STRIPE = 'ST'
@@ -38,7 +38,7 @@ class Guest(models.Model):
     fname = models.CharField(max_length=100)
     lname = models.CharField(max_length=100)
 
-    hash = models.CharField(max_length=20, default=gen_hash, editable=False)
+    hash = models.CharField(max_length=8, default=gen_hash, unique=True)
 
     reentry_allowed = models.BooleanField(default=False)
     category = models.CharField(max_length=5, choices=CATEGORY_CHOICES)
