@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import {Link} from 'react-router-dom';
+
 // Material UI
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -28,7 +30,7 @@ export class AdminDrawer extends React.Component<undefined, AdminDrawerState> {
                 <AppBar title="King's Affair" onLeftIconButtonTouchTap={this.toggle} />
                 <Drawer open={this.state.open}>
                     <AppBar title="King's Affair" onLeftIconButtonTouchTap={this.toggle} />
-                    <MenuItem>Lookup</MenuItem>
+                    <MenuItem><Link to="/list">Lookup</Link></MenuItem>
                     <MenuItem>Announce</MenuItem>
                     <MenuItem>Team</MenuItem>
                 </Drawer>
