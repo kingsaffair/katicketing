@@ -11,19 +11,18 @@ module.exports = {
         filename: '[name]-[hash].js'
     },
 
-    plugins: [
-        new BundleTracker({
-            filename: './webpack-stats.json'
-        })
-    ],
+    plugins: [new BundleTracker({filename: './webpack-stats.json'})],
 
     module: {
         rules: [
             {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            }, {
                 test: /\.tsx?$/,
 
                 exclude: /node_modules/,
-                loader: 'awesome-typescript-loader',
+                loader: 'awesome-typescript-loader'
             }
         ]
     },
@@ -36,4 +35,3 @@ module.exports = {
 
     devtool: 'source-map'
 };
-
