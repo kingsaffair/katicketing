@@ -10,3 +10,5 @@ django-debug-toolbar
 django-filter
 django-crispy-forms
 Pillow
+django-extensions
+django-loginas
