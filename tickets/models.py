@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 
 def gen_hash():
@@ -66,6 +67,36 @@ class Guest(models.Model):
 
     def primary(self):
         return self.parent is None
+    primary.boolean = True
+
+    def has_paid(self):
+        return self.paid is not None
+    has_paid.boolean = True
+
+    def has_collected(self):
+        return self.collected is not None
+    has_collected.boolean = True
+
+    def has_checked_in(self):
+        return self.checked_in is not None
+    has_checked_in.boolean = True
+
+    def create_namechange(self, first_name, last_name):
+        nc = GuestNameChange(
+            guest = self,
+            old_first_name = self.first_name,
+            old_last_name = self.last_name,
+            new_first_name = first_name,
+            new_last_name = last_name,
+            owner = self.owner)
+        nc.save()
+
+        if self.owner.has_perm('free_name_changes'):
+            nc.complete()
+
+    def has_pending_namechange(self):
+        changes = GuestNameChange.objects.filter(guest=self, pending=True)
+        return changes.exists()
 
     class Meta:
         permissions = [
@@ -73,6 +104,7 @@ class Guest(models.Model):
             ("buy_guests", "Can buy two guest tickets"),
             ("buy_extra_guest", "Can buy an extra guest ticket"),
             ("free_primary_ticket", "Entitled to a free primary ticket"),
+            ("free_name_changes", "Entitled to free name changes")
         ]
 
 class GuestNameChange(models.Model):
@@ -80,4 +112,36 @@ class GuestNameChange(models.Model):
     create one of these every time the name changes
     """
     guest = models.ForeignKey(Guest)
-    
+    owner = models.ForeignKey(User)
+
+    new_first_name = models.CharField(max_length=100)
+    new_last_name = models.CharField(max_length=100)
+
+    old_first_name = models.CharField(max_length=100)
+    old_last_name = models.CharField(max_length=100)
+
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
+    pending = models.BooleanField(default=True)
+
+    @staticmethod
+    def has_pending_namechange(user):
+        changes = GuestNameChange.objects.filter(owner=user, pending=True)
+        return changes.exists()
+
+    @staticmethod
+    def namechange_total_cost(user):
+        changes = GuestNameChange.objects.filter(owner=user, pending=True).aggregate(Sum('cost'))
+        return changes['cost__sum']
+
+    def complete(self):
+        self.guest.first_name = self.new_first_name
+        self.guest.last_name = self.new_last_name
+        self.pending = False
+        self.guest.save()
+
+    def __str__(self):
+        return '%s %s -> %s %s' % (self.old_first_name, self.old_last_name, self.new_first_name, self.new_last_name)
+
+    class Meta:
+        verbose_name = 'Name Change'
+        verbose_name_plural = 'Name Changes'

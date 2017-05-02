@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Guest
+from .models import Guest, GuestNameChange
 
 class IsPrimaryFilter(admin.filters.SimpleListFilter):
 	title = 'is primary'
@@ -24,9 +24,13 @@ class GuestAdmin(admin.ModelAdmin):
 	raw_id_fields=('owner', 'parent')
 	search_fields=('first_name', 'last_name', 'owner__username')
 
-	list_display = ('__str__', 'owner', 'category', '_hash')
+	list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in')
 	list_filter = ('category', 'waiting', IsPrimaryFilter, 'payment_method')
 
 	ordering = ('id', )
 
+class GuestNameChangeAdmin(admin.ModelAdmin):
+	raw_id_fields = ('owner', 'guest')
+
 admin.site.register(Guest, GuestAdmin)
+admin.site.register(GuestNameChange, GuestNameChangeAdmin)

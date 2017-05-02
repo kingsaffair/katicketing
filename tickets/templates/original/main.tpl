@@ -14,11 +14,21 @@
 <h2>{{ site_name }}</h2>
 <div id="contentContainer">
 
+{% block return %}
+{% if not hidereturn %}
+{% if user %}
+<span class="return-link"><a href="{% url 'tickets' %}">&laquo; Return to Tickets</a></span>
+{% else %}
+<span class="return-link"><a href="{% url 'tickets' %}">&laquo; Return to Home Page</a></span>
+{% endif %}
+{% endif %}
+{% endblock %}
+
 {% if page_name %}<h3>{{ page_name }}</h3>{% endif %}
 {% block body %}{% endblock %}
 <div class="footer-links">
 {% if user %}
-	<span class="small_header">Logged in as {{ user.username }}{% if user.is_staff %} &mdash; <a href="{% url 'ticket-admin' %}">Admin</a>{% endif %} &mdash; <a href="{% url 'user-logout' %}">Log out</a>.</span>
+	<span class="small_header">Logged in as {{ user.username }}{% if user.is_staff %} &mdash; <a href="{% url 'ticket-admin' %}">Admin</a>{% endif %} &mdash; <a href="{% url 'raven_logout' %}">Log out</a>.</span>
 {% endif %}
 	<ul>
 		<li><a href="{% url "tickets" %}">Home</a></li>
