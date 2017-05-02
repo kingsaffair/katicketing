@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ucamwebauth',
     'debug_toolbar',
     'django_extensions',
+    'loginas'
 ]
 
 MIDDLEWARE = [

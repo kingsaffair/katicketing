@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'', include('ucamwebauth.urls')),
     url(r'^tickets/', include('tickets.urls'))
 ]
+urlpatterns += url(r'^admin/', include('loginas.urls')),
 
 if settings.DEBUG:
     import debug_toolbar

@@ -18,12 +18,12 @@
 {% block body %}{% endblock %}
 <div class="footer-links">
 {% if user %}
-	<span class="small_header">Logged in as {{ user.username }}{% if user.committee_flag == 2 %} &mdash; <a href="{% url 'ticket-admin' %}">Admin</a>{% endif %} &mdash; <a href="{% url 'user-logout' %}">Log out</a>.</span>
+	<span class="small_header">Logged in as {{ user.username }}{% if user.is_staff %} &mdash; <a href="{% url 'ticket-admin' %}">Admin</a>{% endif %} &mdash; <a href="{% url 'user-logout' %}">Log out</a>.</span>
 {% endif %}
 	<ul>
 		<li><a href="{% url "tickets" %}">Home</a></li>
 		<li><a href="{% url "faq" %}">FAQ</a></li>
-		<li><a href="{% url "terms-and-conditions"}">Terms and Conditions</a></li>
+		<li><a href="{% url "terms" %}">Terms and Conditions</a></li>
 	</ul>
 </div>
 </div>

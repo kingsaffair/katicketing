@@ -1,5 +1,5 @@
-{extends file="main.tpl"}
-{block "body"}
+{% extends "original/main.tpl" %}
+{% block body %}
 
 <div class="toc">
 
@@ -17,7 +17,7 @@
 <a name="1"></a>
 <h4><span>1. </span>Introduction</h4>
 
-<p>This document lays out the Terms and Conditions for the purchase of tickets to the King&rsquo;s Affair 2017, taking place on the 21<sup>st</sup> June 2017.</p>
+<p>This document lays out the Terms and Conditions for the purchase of tickets to the {{ event_name }}, taking place on the 21<sup>st</sup> June 2017.</p>
 <p>This agreement is between the King&rsquo;s Affair Committee (hereafter &lsquo;The Committee&rsquo;) and the Principal Ticket Holder. Where the Principal Ticket Holder is also purchasing a guest ticket then they also submit to this agreement on behalf of their guest.</p>
 <p>Failure to adhere to these terms and conditions can lead to, amongst other things, an application being refused or voided, tickets being cancelled, entry to the Event refused or the guest being ejected from the Event.</p>
 <p>Please remember that the King's Affair is organised by students with degrees to work towards and social lives to enjoy. We also have a duty to ensure that our events are accessible and enjoyable for as many people as possible, whilst maintaining financial security and preventing any adverse effects for the College or University. </p>
@@ -26,10 +26,10 @@
 <a name="2"></a>
 <h4><span>2. </span>Definitions of terms used in this document</h4>
 <ul class="definitions">
-	<li><em>&lsquo;Event&rsquo;</em><span>refers to the King's Affair 2016</span></li>
-	<li><em>&lsquo;This Website&rsquo;</em><span>refers to the King's Affair 2016 Ticketing System</span></li>
-	<li><em>&lsquo;Us / We / Our / Committee&rsquo;</em><span>refers to the King's Affair 2016 Committee, or persons acting on their behalf</span></li>
-	<li><em>&lsquo;Chair&rsquo;</em><span>refers to the Chair of the Committee, currently Mariella Mostyn-Williams</span></li>
+	<li><em>&lsquo;Event&rsquo;</em><span>refers to the {{ event_name }}</span></li>
+	<li><em>&lsquo;This Website&rsquo;</em><span>refers to the {{ event_name }} Ticketing System</span></li>
+	<li><em>&lsquo;Us / We / Our / Committee&rsquo;</em><span>refers to the {{ event_name }} Committee, or persons acting on their behalf</span></li>
+	<li><em>&lsquo;Chair&rsquo;</em><span>refers to the Chair of the Committee, currently Nina Grossfurthner</span></li>
 	<li><em>&lsquo;College&rsquo;</em><span>refers to King's College Cambridge and it's officials and staff</span></li>
 	<li><em>&lsquo;You / Your&rsquo;</em><span>refers to the person logged into This Website</span></li>
 	<li><em>&lsquo;Guest&rsquo;</em><span>refers to any person admitted to the event</span></li>
@@ -116,4 +116,4 @@
 
 </div>
 
-{/block}
+{% endblock %}

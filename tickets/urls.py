@@ -7,5 +7,6 @@ urlpatterns = [
 	url('logout', user, name='user-logout'),
 	url('faq', faq, name='faq'),
 	url('admin', admin, name='ticket-admin'),
-	url('', tickets, name='tickets')
+	url('terms', terms, name='terms'),
+	url('', tickets, name='tickets'),
 ]
