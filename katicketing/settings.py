@@ -41,10 +41,7 @@ INSTALLED_APPS = [
     'nightmode',
     'ucamwebauth',
     'debug_toolbar',
-    'webpack_loader',
-    'rest_framework',
-    'django_filters',
-    'crispy_forms'
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +118,15 @@ WSGI_APPLICATION = 'katicketing.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kingsaffair',
+        'USER': 'postgres',
+        'PASSWORD': 'staff_member_required',
+        'HOST': 'localhost',
+        'PORT': '',
+    },
+
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }

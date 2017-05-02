@@ -8,6 +8,8 @@ from .serializers import UserSerializer, GuestSerializer
 from .models import Guest
 from .tasks import generate_qrcode
 
+from .legacy_views import *
+
 class GuestViewSet(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer

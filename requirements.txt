@@ -3,3 +3,10 @@ django
 django-webpack-loader
 djangorestframework
 qrcode
+djangorestframework-jwt
+psycopg2
+celery
+django-debug-toolbar
+django-filter
+django-crispy-forms
+Pillow
