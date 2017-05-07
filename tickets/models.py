@@ -10,7 +10,7 @@ def gen_hash():
 class Guest(models.Model):
     STRIPE = 'ST'
     BANK_TRANSFER = 'BT'
-    COLLEGE_BILL = 'CB' 
+    COLLEGE_BILL = 'CB'
     NONE = 'NO'
 
     PAYMENT_CHOICES = [
