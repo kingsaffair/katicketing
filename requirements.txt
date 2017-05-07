@@ -12,3 +12,4 @@ django-crispy-forms
 Pillow
 django-extensions
 django-loginas
+raven

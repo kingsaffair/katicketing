@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'ucamwebauth',
     'debug_toolbar',
     'django_extensions',
-    'loginas'
+    'loginas',
+    'raven.contrib.django.raven_compat'
 ]
 
 MIDDLEWARE = [
