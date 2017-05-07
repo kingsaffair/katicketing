@@ -33,7 +33,7 @@ JOIN auth_user ON auth_user.username = ka2017_tickets.crsid;
 UPDATE tickets_guest
 SET
     parent_id=b.id,
-    payment_method=p.payment_method
+    payment_method=b.payment_method
 FROM
     (SELECT p.id AS id, p.owner_id AS owner_id, p.price as price, p.payment_method AS payment_method FROM tickets_guest p) b
 WHERE b.owner_id = tickets_guest.owner_id AND NOT tickets_guest.waiting AND b.price>10 AND tickets_guest.id <> b.id;

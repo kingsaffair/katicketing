@@ -162,3 +162,7 @@ typings/
 *.sqlite3
 webpack-stats.json
 assets/bundles
+settings_local.py
+src/
+static/
+

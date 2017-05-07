@@ -88,6 +88,7 @@ class Guest(models.Model):
             old_last_name = self.last_name,
             new_first_name = first_name,
             new_last_name = last_name,
+            cost = 20,
             owner = self.owner)
         nc.save()
 
