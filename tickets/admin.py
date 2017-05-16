@@ -8,10 +8,13 @@ class BaseIsNullFilter(admin.filters.SimpleListFilter):
     title = 'is null'
     parameter_name = 'is_null'
 
+    positive_name = 'not null'
+    negative_name = 'null'
+
     def lookups(self, request, queryset):
         return (
-            ('1', 'null'),
-            ('0', 'not null')
+            ('0', self.positive_name),
+            ('1', self.negative_name)
         )
 
     def queryset(self, request, queryset):
@@ -20,14 +23,17 @@ class BaseIsNullFilter(admin.filters.SimpleListFilter):
         }
 
         if self.value() in ('1', '0'):
-            return queryset.filter(parent__isnull=kwargs)
+            return queryset.filter(**kwargs)
 
         return queryset
 
-def IsNullFilter(field, title_=None):
+def IsNullFilter(field, title_=None, pname=None, nname=None):
     class NullListFieldFilter(BaseIsNullFilter):
         parameter_name = field
         title = title_ or parameter_name
+
+        positive_name = pname or 'not ' + parameter_name
+        negative_name = nname or parameter_name
     return NullListFieldFilter
 
 class GuestAdmin(admin.ModelAdmin):
@@ -35,7 +41,7 @@ class GuestAdmin(admin.ModelAdmin):
     search_fields=('first_name', 'last_name', 'owner__username')
 
     list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in', 'premium')
-    list_filter = ('category', 'waiting', IsNullFilter('parent'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
+    list_filter = ('category', 'waiting', IsNullFilter('parent', 'primary', 'guest'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
 
     ordering = ('id', )
 
