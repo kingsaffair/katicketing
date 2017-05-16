@@ -41,7 +41,7 @@ class Guest(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
-    _hash = models.CharField(max_length=8, default=gen_hash, unique=True)
+    code = models.CharField(max_length=8, default=gen_hash, unique=True)
 
     reentry_allowed = models.BooleanField(default=False)
     category = models.CharField(max_length=5, choices=CATEGORY_CHOICES)

@@ -29,7 +29,8 @@ from tickets.views import tickets
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('ucamwebauth.urls')),
-    url(r'^tickets/', include('tickets.urls'))
+    url(r'^tickets/', include('tickets.urls')),
+    url(r'^t/', include('checkin.urls'))
 ]
 urlpatterns += url(r'^admin/', include('loginas.urls')),
 
