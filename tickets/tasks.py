@@ -4,11 +4,17 @@ from __future__ import absolute_import, unicode_literals
 import qrcode
 
 from celery import shared_task
+
 from django.db import transaction
+from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 from .models import Guest
+from .psd_ticket import PSDTicketGenerator
+
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
 
 @shared_task(bind=True)
 def process_tickets(self, new_tickets):
@@ -66,6 +72,20 @@ def send_cancel_messages(time):
         )
         email.send()
 
+@shared_task
+def ticket_generator(ids):
+    tickets = Guest.objects.filter(id__in=ids)
 
+    sans = settings.SANS_FONT_FILE
+    mono = settings.MONO_FONT_FILE
+    psd_location = settings.PSD_LOCATION
 
+    pdfmetrics.registerFont(TTFont("sans", sans))
+    pdfmetrics.registerFont(TTFont("mono", mono))
 
+    psd = PSDTicketGenerator(psd_location, 156, 66)
+    buf = psd.generate(tickets)
+    
+    # Write the PDF to a file
+    with open('output.pdf', 'wb') as fd:
+        fd.write(buf.getvalue())

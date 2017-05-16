@@ -11,14 +11,13 @@ from jinja2 import Template
 
 template = Template(open('email.tmpl', 'rt').read())
 
-connection = pymysql.connect(
-    host='localhost',
-    user='kingsaffair',
-    password='xetU8!aJ',
-    db='kingsaffair',
-    charset='utf8mb4',
-    port=9876,
-    cursorclass=pymysql.cursors.DictCursor)
+# connection = pymysql.connect(
+#     host='localhost',
+#     user='kingsaffair',
+#     db='kingsaffair',
+#     charset='utf8mb4',
+#     port=9876,
+#     cursorclass=pymysql.cursors.DictCursor)
 
 class NoTicketException(Exception):
     pass

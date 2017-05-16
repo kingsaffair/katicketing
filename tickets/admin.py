@@ -1,7 +1,7 @@
 from django.contrib import admin
 from datetime import datetime
 
-from .tasks import send_cancel_messages
+from .tasks import send_cancel_messages, ticket_generator
 from .models import Guest, GuestNameChange
 
 class BaseIsNullFilter(admin.filters.SimpleListFilter):
@@ -45,7 +45,7 @@ class GuestAdmin(admin.ModelAdmin):
 
     ordering = ('id', )
 
-    actions = ['mark_cancelled', 'mark_paid', 'mark_not_cancelled']
+    actions = ['mark_cancelled', 'mark_paid', 'mark_not_cancelled', 'generate_ticket_pdf']
     def mark_cancelled(self, request, queryset):
         queryset_children = Guest.objects.filter(parent__in=queryset)
         count = queryset_children.count() + queryset.count()
@@ -76,6 +76,12 @@ class GuestAdmin(admin.ModelAdmin):
 
         count = queryset.count()
         self.message_user(request, "%d ticket%s marked as paid." % (count, 's' if count > 1 else ''))
+
+    def generate_ticket_pdf(self, request, queryset):
+        queryset = queryset.filter(paid__isnull=False, cancelled__isnull=True, waiting=False)
+        ids = [t.id for t in queryset]
+
+        ticket_generator.delay(ids)
 
 class GuestNameChangeAdmin(admin.ModelAdmin):
     raw_id_fields = ('owner', 'guest')
