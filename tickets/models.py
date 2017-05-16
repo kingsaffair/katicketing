@@ -82,6 +82,10 @@ class Guest(models.Model):
         return self.checked_in is not None
     has_checked_in.boolean = True
 
+    def is_cancelled(self):
+        return self.cancelled is not None
+    is_cancelled.boolean = True
+
     def create_namechange(self, first_name, last_name):
         nc = GuestNameChange(
             guest = self,

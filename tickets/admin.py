@@ -40,7 +40,7 @@ class GuestAdmin(admin.ModelAdmin):
     raw_id_fields=('owner', 'parent')
     search_fields=('first_name', 'last_name', 'owner__username')
 
-    list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in', 'premium')
+    list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in', 'is_cancelled', 'premium')
     list_filter = ('category', 'waiting', IsNullFilter('parent', 'primary', 'primary', 'guest'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
 
     ordering = ('id', )
