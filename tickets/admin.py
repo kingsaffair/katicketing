@@ -13,8 +13,8 @@ class BaseIsNullFilter(admin.filters.SimpleListFilter):
 
     def lookups(self, request, queryset):
         return (
-            ('0', self.positive_name),
-            ('1', self.negative_name)
+            ('1', self.positive_name),
+            ('0', self.negative_name)
         )
 
     def queryset(self, request, queryset):
@@ -41,11 +41,11 @@ class GuestAdmin(admin.ModelAdmin):
     search_fields=('first_name', 'last_name', 'owner__username')
 
     list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in', 'premium')
-    list_filter = ('category', 'waiting', IsNullFilter('parent', 'primary', 'guest'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
+    list_filter = ('category', 'waiting', IsNullFilter('parent', 'primary', 'primary', 'guest'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
 
     ordering = ('id', )
 
-    actions = ['mark_cancelled', 'mark_paid']
+    actions = ['mark_cancelled', 'mark_paid', 'mark_not_cancelled']
     def mark_cancelled(self, request, queryset):
         queryset_children = Guest.objects.filter(parent__in=queryset)
         time = datetime.now()
@@ -53,11 +53,21 @@ class GuestAdmin(admin.ModelAdmin):
         queryset.update(cancelled=time)
         queryset_children.update(cancelled=time)
 
+        # send cancel messages to all these people (celery task).
+        send_cancel_messages.delay(time)
+
         count = queryset_children.count() + queryset.count()
         self.message_user(request, "%d ticket%s marked as cancelled." % (count, 's' if count > 1 else ''))
 
-        # send cancel messages to all these people.
-        send_cancel_messages.delay(time)
+    def mark_not_cancelled(self, request, queryset):
+        queryset_children = Guest.objects.filter(parent__in=queryset)
+        time = datetime.now()
+
+        queryset.update(cancelled=None)
+        queryset_children.update(cancelled=None)
+
+        count = queryset_children.count() + queryset.count()
+        self.message_user(request, "%d ticket%s marked as not cancelled." % (count, 's' if count > 1 else ''))
 
     def mark_paid(self, request, queryset):
         queryset.update(paid=datetime.now())
