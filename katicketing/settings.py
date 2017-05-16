@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'loginas',
-    'raven.contrib.django.raven_compat'
+    'raven.contrib.django.raven_compat',
+    'anymail'
 ]
 
 MIDDLEWARE = [

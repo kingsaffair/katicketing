@@ -5,6 +5,8 @@ import qrcode
 
 from celery import shared_task
 from django.db import transaction
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 from .models import Guest
 
@@ -41,3 +43,29 @@ def generate_qrcode(self, guest, hash):
     guest = Guest.objects.get(id=guest)
     guest.qr_code.name = 'qr-%s.png' % hash
     guest.save()
+
+@shared_task
+def send_cancel_messages(time):
+    # send one for all of the primary tickets
+    cancellations = Guest.objects.filter(cancelled=time, parent__isnull=True)
+
+    for ticket in cancellations:
+        body = render_to_string('emails/cancel.tpl', {'first_name': ticket.first_name})
+        email = ticket.owner.email
+
+        if email is None:
+            # this is potentially an issue, but we'll deal with that if we come to it.
+            continue
+
+        email = EmailMessage(
+            'King\'s Affair Ticket Cancellation',
+            body,
+            'tickets@noreply.kingsaffair.com',
+            [email],
+            reply_to=('ticketing@kingsaffair.com',)
+        )
+        email.send()
+
+
+
+
