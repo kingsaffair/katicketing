@@ -85,7 +85,7 @@ def ticket_generator(ids):
 
     psd = PSDTicketGenerator(psd_location, 156, 66)
     buf = psd.generate(tickets)
-    
+
     # Write the PDF to a file
-    with open('output.pdf', 'wb') as fd:
+    with open(settings.PDF_OUTPUT_LOCATION, 'wb') as fd:
         fd.write(buf.getvalue())
