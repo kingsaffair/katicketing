@@ -49,11 +49,12 @@ class GuestAdmin(admin.ModelAdmin):
     def mark_cancelled(self, request, queryset):
         queryset_children = Guest.objects.filter(parent__in=queryset)
         count = queryset_children.count() + queryset.count()
-        
+
         time = datetime.now()
 
-        queryset.update(cancelled=time)
+        # update children first so we don't accidentally ignore the children
         queryset_children.update(cancelled=time)
+        queryset.update(cancelled=time)
 
         # send cancel messages to all these people (celery task).
         send_cancel_messages.delay(time)
@@ -64,8 +65,9 @@ class GuestAdmin(admin.ModelAdmin):
         queryset_children = Guest.objects.filter(parent__in=queryset)
         count = queryset_children.count() + queryset.count()
 
-        queryset.update(cancelled=None)
+        # update children first so we don't accidentally ignore the children
         queryset_children.update(cancelled=None)
+        queryset.update(cancelled=None)
 
         self.message_user(request, "%d ticket%s marked as not cancelled." % (count, 's' if count > 1 else ''))
 
