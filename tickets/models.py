@@ -61,6 +61,7 @@ class Guest(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, null=True)
+    cancelled = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

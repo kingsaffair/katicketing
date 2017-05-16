@@ -13,3 +13,4 @@ Pillow
 django-extensions
 django-loginas
 raven
+django-anymail[mailgun]

@@ -1,4 +1,6 @@
 from django.contrib import admin
+from datetime import datetime
+
 from .models import Guest, GuestNameChange
 
 class IsPrimaryFilter(admin.filters.SimpleListFilter):
@@ -45,11 +47,18 @@ class GuestAdmin(admin.ModelAdmin):
 
     ordering = ('id', )
 
+    actions = ['mark_cancelled']
+    def mark_cancelled(self, request, queryset):
+        queryset_children = Guest.objects.filter(parent__in=queryset)
+        queryset.update(cancelled=datetime.now())
+        queryset_children.update(cancelled=datetime.now())
+
 class GuestNameChangeAdmin(admin.ModelAdmin):
-    raw_id_fields = ('owner', 'guest', 'owner__username')
+    raw_id_fields = ('owner', 'guest')
 
     list_display = ('__str__', 'owner', 'pending')
     list_filter = ('pending', )
+
     actions = ['mark_complete']
     def mark_complete(self, request, queryset):
         queryset.update(pending=False)

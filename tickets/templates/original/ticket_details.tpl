@@ -81,7 +81,7 @@
 	<tbody>
 {% for ticket in tickets %}
 		<tr>
-			<th scope="row">{% if ticket.primary %}Primary{% else %}Guest {{ forloop.counter0 }}{% endif %}</th>
+			<th scope="row">{% if ticket.cancelled %}Cancelled{% elif ticket.primary %}Primary{% else %}Guest {{ forloop.counter0 }}{% endif %}</th>
 			<td>{{ ticket.first_name }}</td>
 			<td>{{ ticket.last_name }}</td>
 			<td>{{ ticket.get_category_display }}{% if ticket.premium %}(Queue Jump){% endif %}</td>
