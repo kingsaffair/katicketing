@@ -4,47 +4,38 @@ from datetime import datetime
 from .tasks import send_cancel_messages
 from .models import Guest, GuestNameChange
 
-class IsPrimaryFilter(admin.filters.SimpleListFilter):
-    title = 'is primary'
-    parameter_name = 'is_primary'
+class BaseIsNullFilter(admin.filters.SimpleListFilter):
+    title = 'is null'
+    parameter_name = 'is_null'
 
     def lookups(self, request, queryset):
         return (
-            ('1', 'Primary'),
-            ('0', 'Guest')
+            ('1', 'null'),
+            ('0', 'not null')
         )
 
     def queryset(self, request, queryset):
-        if self.value() == '1':
-            return queryset.filter(parent__isnull=True)
-        elif self.value() == '0':
-            return queryset.filter(parent__isnull=False)
+        kwargs = {
+            self.parameter_name + '__isnull': self.value() == '1'
+        }
+
+        if self.value() in ('1', '0'):
+            return queryset.filter(parent__isnull=kwargs)
 
         return queryset
 
-class HasPaidFilter(admin.filters.SimpleListFilter):
-    title = 'has paid'
-    parameter_name = 'has_paid'
-
-    def lookups(self, request, queryset):
-        return (
-            ('0', 'Not Paid'),
-            ('1', 'Paid')
-        )
-
-    def queryset(self, request, queryset):
-        if self.value() == '0':
-            return queryset.filter(paid__isnull=True)
-        elif self.value() == '1':
-            return queryset.filter(paid__isnull=False)
-        return queryset
+def IsNullFilter(field, title_=None):
+    class NullListFieldFilter(BaseIsNullFilter):
+        parameter_name = field
+        title = title_ or parameter_name
+    return NullListFieldFilter
 
 class GuestAdmin(admin.ModelAdmin):
     raw_id_fields=('owner', 'parent')
     search_fields=('first_name', 'last_name', 'owner__username')
 
     list_display = ('__str__', 'owner', 'category', 'has_paid', 'has_collected', 'has_checked_in', 'premium')
-    list_filter = ('category', 'waiting', IsPrimaryFilter, 'payment_method', HasPaidFilter)
+    list_filter = ('category', 'waiting', IsNullFilter('parent'), 'payment_method', IsNullFilter('paid'), IsNullFilter('cancelled'))
 
     ordering = ('id', )
 
