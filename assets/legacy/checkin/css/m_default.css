@@ -1,0 +1,324 @@
+/* 
+ *	Basic CSS Reset
+ */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+ul {
+	list-style-type: none;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: #0099cc;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+h2, h3, h4, h5, h6 {
+	font-family: Arial, sans-serif;
+}
+
+p, span, ul, body, input, select, label, legend {
+	font-family: Verdana, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, body, input, select, label, legend, span, ul, dl, p{
+	font-weight: normal;
+	font-size: 0.9em;
+}
+
+p {
+	line-height: 1.7em;
+}
+
+p + p {
+	margin-top: 1.2em;
+}
+
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+
+sup, sub {
+	font-size: 0.6em;
+	vertical-align: baseline;
+	position: relative;	
+}
+sup {
+	top: -0.65em;
+}
+sub {
+	top: 0.2em;
+}
+
+html,body {
+	height: 100%;
+}
+
+body {
+	border-top: 5px solid #006;
+	background: #fff;
+	-webkit-text-size-adjust: none;
+}
+
+#headerContainer {
+	background: #606060;
+	color: #fff;
+	padding: 8px 0 8px 8px;
+	overflow: hidden;
+}
+
+#contentContainer {
+	padding: 28px;
+	min-height: 100%;
+	overflow: hidden;
+	padding: 28px;
+	-webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+h1 {
+	font-size: 24px;
+	padding: 2px;
+	float: left;
+}
+
+.menu {
+	float: right;
+	font-size: 16px;
+	padding: 4px 10px 4px 12px;
+	border-left: 1px solid #c0c0c0;
+}
+
+.menu > a {
+	color: #fff;
+}
+
+h2 {
+	text-align: right;
+	font-size: 1.8em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+.copyright {
+	display: block;
+	text-align: center;
+	margin: 2em 0;
+	font-size: 0.6em;
+	color: #a0a0a0;
+}
+
+.js {
+	display: none;
+}
+
+dl.simple > dt {
+	float: left;
+	width: 100px;
+	text-transform: uppercase;
+	padding: 0.55em;
+	margin-right: 1em;
+	color: #808080;
+	font-size: 0.8em;
+}
+dl.simple > dd {
+	padding: 0.5em;
+	font-size: 0.8em;
+}
+dl.simple > dt:nth-child(4n+1), dl.simple > dd:nth-child(4n+2) {
+	background: #f8f8f8;
+}
+
+span.error {
+	display: block;
+	color: #a00;
+	text-align: center;
+}
+
+p.error {
+	color: #a00;
+	font-size: 1em;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+div.ticket {
+	margin-top: 16px;
+	margin-bottom: 8px;
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: #e0e0e0;
+	border: 1px solid #c0c0c0;
+	position: relative;
+	clear: all;
+	cursor: pointer;
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+}
+
+div.ticket:first-child {
+	margin-top: 0;
+}
+
+div.ticket > ul.icons {
+	position: absolute;
+	top: 7px;
+	right: 5px;
+}
+
+div.ticket > div.status {
+	position: absolute;
+	top: 39px;
+	right: 5px;
+}
+
+div.ticket > ul.icons > li, div.ticket > div.status {
+	text-transform: uppercase;
+	font-size: 9px;
+	background: #fff;
+	-moz-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 2px 5px;
+	border: 1px solid #a0a0a0;
+	margin-left: 5px;
+	float: left;
+}
+
+div.ticket > h3 {
+	-moz-border-radius: 5px 5px 0 0;
+	-khtml-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	background: #f0f0f0;
+	padding: 8px;
+    font-size: 13px;
+}
+
+div.ticket > h4 {
+	padding: 8px;
+	font-family: Courier New, fixed;
+	font-size: 13px;
+}
+
+div.ticket > h5 {
+	padding: 4px 8px 8px 8px;
+	font-size: 12px;
+}
+
+div.ticket > h6 {
+	padding: 4px 8px 8px 8px;
+	font-size: 12px;
+	text-align: right;
+	float: right;
+	margin-top: -24px;
+}
+
+div.ticket > h4, div.ticket > h5, div.ticket > h6 {
+	color: #707070;
+}
+
+div.ticket > div.initial {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin: -10px 0 0 -15px;
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid #909090;
+	cursor: auto;
+}
+
+div.ticket.complete {
+	background: #707070;
+}
+
+div.ticket.complete > h3 {
+	background: #7a7a7a;
+	color: #cacaca;
+}
+
+div.ticket.complete > h4, div.ticket.complete > h5, div.ticket.complete > h6 {
+	color: #d0d0d0;
+}
+
+div.ticket.complete > ul.icons > li, div.ticket.complete > div.status {
+	background: #e0e0e0;
+}
+
+div.ticket.selected {
+	background: #9fc267;
+}
+
+div.ticket.selected > h3 {
+	background: #b9dd80;
+}
+
+div.ticket.warning {
+	background: #ddcf80;
+}
+
+div.ticket.warning > h3 {
+	background: #f1e28f;
+}
+
+input.button {
+	float: right;
+	margin-top: 10px;
+	border: 1px solid #c0c0c0;
+	background: #f0f0f0;
+	padding: 5px;
+    cursor: pointer;
+	-moz-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+form.simple {
+	width: 100%;
+	margin: 1.6em auto;
+	overflow: hidden;
+}
+form.simple label {
+	display: block;
+	font-size: 0.8em;
+	margin: 10px 0 3px 0;
+}
+form.simple input.field {
+	margin: 3px 0 10px 0;
+	display: block;
+	width: 100%;
+	border: 1px solid #c0c0c0;
+	-webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    padding: 2px;
+	-moz-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	text-align: center;
+	font-size: 20px;
+}
+input#hash {
+	font-family: Courier New, fixed;
+}
