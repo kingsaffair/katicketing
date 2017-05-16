@@ -27,14 +27,14 @@ class HasPaidFilter(admin.filters.SimpleListFilter):
 
     def lookups(self, request, queryset):
         return (
-            ('1', 'Paid'),
-            ('2', 'Not Paid')
+            ('0', 'Not Paid'),
+            ('1', 'Paid')
         )
 
     def queryset(self, request, queryset):
-        if self.value() == '1':
+        if self.value() == '0':
             return queryset.filter(paid__isnull=True)
-        elif self.value() == '2':
+        elif self.value() == '1':
             return queryset.filter(paid__isnull=False)
         return queryset
 
@@ -50,8 +50,12 @@ class GuestAdmin(admin.ModelAdmin):
     actions = ['mark_cancelled']
     def mark_cancelled(self, request, queryset):
         queryset_children = Guest.objects.filter(parent__in=queryset)
+
         queryset.update(cancelled=datetime.now())
         queryset_children.update(cancelled=datetime.now())
+
+        count = queryset_children.count() + queryset.count()
+        self.message_user(request, "%d ticket%s marked as cancelled." % (count, 's' if count > 1 else ''))
 
 class GuestNameChangeAdmin(admin.ModelAdmin):
     raw_id_fields = ('owner', 'guest')
