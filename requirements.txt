@@ -14,3 +14,5 @@ django-extensions
 django-loginas
 raven
 django-anymail[mailgun]
+psd-tools
+reportlab
