@@ -66,8 +66,6 @@ def extract_nc(post_data, i):
 @login_required
 def namechange(request):
     if request.method == 'POST':
-        print(request.POST)
-
         count = int(request.POST['g_count'])
 
         for i in range(count):
