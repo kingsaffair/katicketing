@@ -82,7 +82,7 @@ class GuestAdmin(admin.ModelAdmin):
         self.message_user(request, "%d ticket%s marked as paid." % (count, 's' if count > 1 else ''))
 
     def generate_ticket_pdf(self, request, queryset):
-        queryset = queryset.filter(paid__isnull=False, cancelled__isnull=True, waiting=False)
+        queryset = queryset.filter(cancelled__isnull=True, waiting=False)
         ids = [t.id for t in queryset]
 
         job = ticket_generator.delay(ids)
