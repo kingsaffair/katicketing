@@ -1,6 +1,9 @@
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+
+from celery.result import AsyncResult
 
 from .models import Guest, GuestNameChange
 
@@ -62,6 +65,17 @@ def extract_nc(post_data, i):
         return None
 
     return out
+
+@staff_member_required
+def ticket_pdf(request):
+    if 'jid' not in request.GET:
+        raise Http404()
+    
+    jid = request.GET['jid']
+
+    result = AsyncResult(jid)
+    
+    return HttpResponse(result.state())
 
 @login_required
 def namechange(request):

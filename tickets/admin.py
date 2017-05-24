@@ -81,7 +81,8 @@ class GuestAdmin(admin.ModelAdmin):
         queryset = queryset.filter(paid__isnull=False, cancelled__isnull=True, waiting=False)
         ids = [t.id for t in queryset]
 
-        ticket_generator.delay(ids)
+        job = ticket_generator.delay(ids)
+        self.message_user(request, "Started generating ticket. Job id: %s" % job.id)
 
 class GuestNameChangeAdmin(admin.ModelAdmin):
     raw_id_fields = ('owner', 'guest')
