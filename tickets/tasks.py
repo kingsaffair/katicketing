@@ -6,6 +6,8 @@ import qrcode
 from celery import shared_task
 
 from django.db import transaction
+from django.db.models import F
+
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -74,7 +76,7 @@ def send_cancel_messages(time):
 
 @shared_task
 def ticket_generator(ids):
-    tickets = Guest.objects.filter(id__in=ids).order_by('owner__last_name')
+    tickets = Guest.objects.filter(id__in=ids).order_by('owner__last_name', 'owner__first_name', F("owner").desc(nulls_last=False, nulls_first=True))
 
     sans = settings.SANS_FONT_FILE
     mono = settings.MONO_FONT_FILE
