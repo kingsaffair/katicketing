@@ -74,7 +74,7 @@ def send_cancel_messages(time):
 
 @shared_task
 def ticket_generator(ids):
-    tickets = Guest.objects.filter(id__in=ids)
+    tickets = Guest.objects.filter(id__in=ids).order_by('owner__last_name')
 
     sans = settings.SANS_FONT_FILE
     mono = settings.MONO_FONT_FILE
