@@ -74,9 +74,9 @@ def send_cancel_messages(time):
         )
         email.send()
 
-@shared_task
-def ticket_generator(ids):
-    tickets = Guest.objects.filter(id__in=ids).order_by('owner__last_name', 'owner__first_name', F("owner").desc(nulls_last=False, nulls_first=True))
+@shared_task(bind=True)
+def ticket_generator(self, ids):
+    tickets = Guest.objects.filter(id__in=ids).order_by('owner__last_name', 'owner__first_name', F("owner").desc(nulls_last=True, nulls_first=False))
 
     sans = settings.SANS_FONT_FILE
     mono = settings.MONO_FONT_FILE
@@ -86,8 +86,15 @@ def ticket_generator(ids):
     pdfmetrics.registerFont(TTFont("mono", mono))
 
     psd = PSDTicketGenerator(psd_location, 156, 66)
-    buf = psd.generate(tickets)
+    n = tickets.count()
+
+    for i, ticket in enumerate(tickets):
+        psd.add_page(ticket)
+        self.update_state(state='PROGRESS', meta={'progress_percent': i / n})
+
+    buf = psd.save()
 
     # Write the PDF to a file
+    # this would be a lovely use case for S3 or similar, but oh well it's only one file.
     with open(settings.PDF_OUTPUT_LOCATION, 'wb') as fd:
         fd.write(buf.getvalue())

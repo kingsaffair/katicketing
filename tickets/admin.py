@@ -1,4 +1,8 @@
 from django.contrib import admin
+from django.urls import reverse
+
+from django.utils.safestring import mark_safe
+
 from datetime import datetime
 
 from .tasks import send_cancel_messages, ticket_generator
@@ -82,7 +86,7 @@ class GuestAdmin(admin.ModelAdmin):
         ids = [t.id for t in queryset]
 
         job = ticket_generator.delay(ids)
-        self.message_user(request, "Started generating ticket. Job id: %s" % job.id)
+        self.message_user(request, mark_safe("Started generating tickets. See progress: <a href='%s?jid=%s'>here</a>" % (reverse('ticket-pdf-status'), job.id)))
 
 class GuestNameChangeAdmin(admin.ModelAdmin):
     raw_id_fields = ('owner', 'guest')

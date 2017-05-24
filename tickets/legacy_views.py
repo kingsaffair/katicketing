@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -67,7 +68,7 @@ def extract_nc(post_data, i):
     return out
 
 @staff_member_required
-def ticket_pdf(request):
+def ticket_pdf_status(request):
     if 'jid' not in request.GET:
         raise Http404()
     
@@ -75,7 +76,17 @@ def ticket_pdf(request):
 
     result = AsyncResult(jid)
     
-    return HttpResponse(result.state())
+    out = '{"state":"%s", "progress": %s}' % (result.state, str(result.result or result.state))
+
+    return HttpResponse(out)
+
+@staff_member_required
+def ticket_pdf(request):
+    f = open(settings.PDF_OUTPUT_LOCATION, 'rb')
+
+    response = HttpResponse(content=f)
+    response['Content-Type'] = 'application/pdf'
+    return response
 
 @login_required
 def namechange(request):

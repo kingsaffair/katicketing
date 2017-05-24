@@ -39,6 +39,11 @@ class PSDTicketGenerator:
             pagesize=(self.width*mm, self.height*mm),
         )
 
+        self.pdf.setAuthor("King's Affair")
+        self.pdf.setCreator("King's Affair")
+        self.pdf.setTitle("Tickets")
+        self.pdf.setSubject("King's Affair Tickets 2017")
+
         self.layers = OrderedDict(
             (layer.name, (layer, ImageReader(layer.as_PIL()))) for layer in self.psd.layers
         )
@@ -73,41 +78,41 @@ class PSDTicketGenerator:
     def scale(self, x):
         return x / self.scale_factor
 
-    def generate(self, queryset):
+    def add_page(self, ticket):
         qr_x, qr_y, qr_w, qr_h = self.qr_box()
         name_x, name_y = self.text_position()
 
-        for ticket in queryset:
-            for name, layer in reversed(self.layers.items()):
-                if name in self.ignore_layers:
-                    continue
+        for name, layer in reversed(self.layers.items()):
+            if name in self.ignore_layers:
+                continue
 
-                if ticket.premium and name in (self.ga_layer_name, self.ga_text_layer_name):
-                    continue
-                elif not ticket.premium and name in (self.qj_layer_name, self.qj_text_layer_name):
-                    continue
+            if ticket.premium and name in (self.ga_layer_name, self.ga_text_layer_name):
+                continue
+            elif not ticket.premium and name in (self.qj_layer_name, self.qj_text_layer_name):
+                continue
 
-                layer, image = layer
+            layer, image = layer
 
-                x = self.scale(layer.bbox.x1)*mm
-                y = (self.height - self.scale(layer.bbox.y2))*mm
-                w = self.scale(layer.bbox.width)*mm
-                h = self.scale(layer.bbox.height)*mm
+            x = self.scale(layer.bbox.x1)*mm
+            y = (self.height - self.scale(layer.bbox.y2))*mm
+            w = self.scale(layer.bbox.width)*mm
+            h = self.scale(layer.bbox.height)*mm
 
-                self.pdf.drawImage(image, x, y, width=w, height=h, mask='auto')
+            self.pdf.drawImage(image, x, y, width=w, height=h, mask='auto')
 
-            qr = qrcode.make('http://www.kingsaffair.com/t/%s/' % ticket.code)
-            self.pdf.drawImage(ImageReader(qr._img), qr_x, qr_y, width=qr_w, height=qr_h)
+        qr = qrcode.make('http://www.kingsaffair.com/t/%s/' % ticket.code)
+        self.pdf.drawImage(ImageReader(qr._img), qr_x, qr_y, width=qr_w, height=qr_h)
 
-            self.pdf.setFillColorRGB(0.21,0.21,0.21)
+        self.pdf.setFillColorRGB(0.21,0.21,0.21)
 
-            self.pdf.setFont("mono", 10)
-            self.pdf.drawCentredString(qr_x + (qr_w / 2), (qr_h - qr_y), ticket.code)
+        self.pdf.setFont("mono", 10)
+        self.pdf.drawCentredString(qr_x + (qr_w / 2), (qr_h - qr_y), ticket.code)
 
-            self.pdf.setFont("sans", 16)
-            self.pdf.drawCentredString(name_x, name_y, str(ticket).upper())
+        self.pdf.setFont("sans", 16)
+        self.pdf.drawCentredString(name_x, name_y, str(ticket).upper())
 
-            self.pdf.showPage()
+        self.pdf.showPage()
 
+    def save(self):
         self.pdf.save()
         return self.buf
