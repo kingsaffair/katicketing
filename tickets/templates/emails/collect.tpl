@@ -19,8 +19,7 @@ Please bring photo ID (University Card or similar) with you for collection.
 
 ** YOUR TICKETS **
 {% for ticket in tickets %}
-{{ ticket.fname }} {{ ticket.lname }}: {% if ticket.primary_ticket %}(Primary Ticket){% endif %}
-    {{ ticket.type_name }}
+{{ ticket.first_name }} {{ ticket.last_name }}{% if not ticket.parent %}: (Primary Ticket){% endif %}
 {% endfor %}
 
 * Name Changes *
@@ -30,12 +29,12 @@ cost £30. Name changes to primary tickets can only be done in exceptional
 circumstances. If you would like a primary name change, please email the 
 new crsid and name to ticketing@kingsaffair.com.
 
-If you have requested a name change since last Sunday, these will be processed
+If you have requested a name change since last Thursday, these will be processed
 on Thursday evening (if they haven't been already), and will not be reflected
 on the physical tickets. Additionally, if you are the recipient of a primary
-name change that has been processed since last Sunday, your ticket will have
+name change that has been processed since last Thursday, your ticket will have
 the previous ticket holder's name on it, so please remember that when you come to
-collect.
+collect your ticket.
 
 Information about ticket collection will be released soon over our Facebook page
 https://www.facebook.com/thekingsaffair.

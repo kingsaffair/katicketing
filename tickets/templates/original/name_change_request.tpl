@@ -33,11 +33,11 @@
 	</fieldset>
 {% endfor %}
 
-{% if not user.is_staff %}
+{# {% if not user.is_staff %} #}
 	<p class="nofield"><strong>Name change requests must be paid by Bank Transfer.</strong></p>
-{% else %}
+{# {% else %}
 	<p class="nofield"><strong>Name changes are free, since you're a committee member.</strong></p>
-{% endif %}
+{% endif %} #}
 	<p class="nofield"><input type="submit" name="submit" id="submit" value="Submit" class="button" /></p>
 </form>
 {% endblock %}
