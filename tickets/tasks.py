@@ -78,10 +78,17 @@ def send_collect_messages():
     # send to all non-collected people
     tickets = Guest.objects.filter(cancelled__isnull=True, waiting=False, owner__isnull=True)
 
-    for ticket in cancellations:
-        tickets = Guest.objects.filter(owner=ticket.owner)
-        body = render_to_string('emails/collect.tpl', {'first_name': ticket.first_name, 'tickets': tickets})
-        email = 'me390@cam.ac.uk'
+    for ticket in tickets:
+        u_tickets = Guest.objects
+            .filter(owner=ticket.owner,
+                    cancelled__isnull=True,
+                    waiting=False)
+            .order_by(
+                    F("parent").desc(nulls_last=False)
+                )
+
+        body = render_to_string('emails/collect.tpl', {'first_name': ticket.first_name, 'tickets': u_tickets})
+        email = ticket.owner.email
 
         if email is None:
             # this is potentially an issue, but we'll deal with that if we come to it.
@@ -96,11 +103,9 @@ def send_collect_messages():
         )
         email.send()
 
-        break
-
 @shared_task(bind=True)
 def ticket_generator(self, ids):
-    tickets = Guest.objects.filter(id__in=ids).order_by(F("owner").desc(nulls_last=True), 'owner__last_name', 'owner__first_name')
+    tickets = Guest.objects.filter(id__in=ids).order_by(id__in=ids).order_by('owner__last_name', 'owner__first_name', F("parent").desc(nulls_first=True))
 
     sans = settings.SANS_FONT_FILE
     mono = settings.MONO_FONT_FILE
