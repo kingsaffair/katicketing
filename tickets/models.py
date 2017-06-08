@@ -93,11 +93,12 @@ class Guest(models.Model):
             old_last_name = self.last_name,
             new_first_name = first_name,
             new_last_name = last_name,
-            cost = 20,
+            cost = 30,
             owner = self.owner)
         nc.save()
 
         if self.owner.has_perm('free_name_changes'):
+            nc.cost = 0
             nc.complete()
 
     def has_pending_namechange(self):
@@ -144,6 +145,7 @@ class GuestNameChange(models.Model):
         self.guest.last_name = self.new_last_name
         self.pending = False
         self.guest.save()
+        self.save()
 
     def __str__(self):
         return '%s %s -> %s %s' % (self.old_first_name, self.old_last_name, self.new_first_name, self.new_last_name)
