@@ -34,7 +34,7 @@ def checkin(request, hash=None):
 
     ctx.update({
         'hash': hash,
-        'ticket': ticket,
+        'ticket': ticket.parent or ticket,
         'tickets': tickets,
     })
 

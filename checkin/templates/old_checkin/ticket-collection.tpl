@@ -1,19 +1,20 @@
 {% extends "old_checkin/main.tpl" %}
+{% load static %}
 {% block head %}
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript">mode = 0; ignore = 0;</script>
-	<script type="text/javascript" src="{% static 'scripts/tickets.js' %}"></script>
+	<script type="text/javascript" src="{% static 'legacy/checkin/js/tickets.js' %}"></script>
 {% endblock %}
 {% block body %}
 {% if not ticket.paid %}
-<p class="error">Required payment of &pound;{$paid}.</p>
+<p class="error">Required payment of &pound;{{ ticket.price }}.</p>
 {% endif %}
-<form method="post" action="{{ url mode=$hash }}" class="tickets{% if not paid %} notpaid{% endif %}">
+<form method="post" action="" class="tickets{% if not paid %} notpaid{% endif %}">
 {% csrf_token %}
 
 {% for ticket in tickets %}
-<div class="ticket{% if ticket.collected %} complete{% elseif ticket.selected %} selected{% endif %}{% if ticket.primary %} primary{% endif %}">
-	<input type="hidden" name="t_{{ ticket.id }}" value="{{ if ticket.selected && ticket.collected %}1{% else %}0{% endif %}" />
+<div class="ticket{% if ticket.collected %} complete{% elif ticket.selected %} selected{% endif %}{% if ticket.primary %} primary{% endif %}">
+	<input type="hidden" name="t_{{ ticket.id }}" value="{% if ticket.selected and ticket.collected %}1{% else %}0{% endif %}" />
 {% if ticket.selected %}
 	<div class="initial"></div>
 {% endif %}
@@ -27,7 +28,7 @@
 	<div class="status">Already Collected</div>
 {% endif %}
 	<h3>{{ ticket }}</h3>
-	<h4>{{ ticket.hash }}</h4>
+	<h4>{{ ticket.code }}</h4>
 	<!-- <h5>{$ticket['entrance']}</h5> -->
 	<!-- <h6>{if $separate}Separated Entry{/if}</h6> -->
 </div>
