@@ -97,7 +97,7 @@ class Guest(models.Model):
             owner = self.owner)
         nc.save()
 
-        if self.owner.has_perm('free_name_changes'):
+        if self.owner.has_perm('tickets.free_name_changes'):
             nc.cost = 0
             nc.complete()
 
