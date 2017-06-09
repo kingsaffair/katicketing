@@ -79,13 +79,13 @@ def send_collect_messages():
     tickets = Guest.objects.filter(cancelled__isnull=True, waiting=False, owner__isnull=True)
 
     for ticket in tickets:
-        u_tickets = Guest.objects
-            .filter(owner=ticket.owner,
-                    cancelled__isnull=True,
-                    waiting=False)
-            .order_by(
-                    F("parent").desc(nulls_last=False)
-                )
+        u_tickets = Guest.objects.filter(
+                owner=ticket.owner,
+                cancelled__isnull=True,
+                waiting=False               
+            ).order_by(
+                F("parent").desc(nulls_last=False)
+            )
 
         body = render_to_string('emails/collect.tpl', {'first_name': ticket.first_name, 'tickets': u_tickets})
         email = ticket.owner.email
