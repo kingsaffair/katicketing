@@ -9,7 +9,7 @@
 {% if not ticket.paid %}
 <p class="error">Required payment of &pound;{{ ticket.price }}.</p>
 {% endif %}
-<form method="post" action="" class="tickets{% if not paid %} notpaid{% endif %}">
+<form method="post" action="" class="tickets{% if not ticket.paid %} notpaid{% endif %}">
 {% csrf_token %}
 
 {% for ticket in tickets %}

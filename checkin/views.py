@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from django.shortcuts import render, redirect
+from django.db.models import F
 from django.http import Http404
+from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 
 from tickets.models import Guest
@@ -30,7 +31,7 @@ def checkin(request, hash=None):
         return render(request,'old_checkin/ticket-general.tpl', global_context)
 
     ticket = Guest.objects.get(code=hash)
-    tickets = Guest.objects.filter(owner=ticket.owner)
+    tickets = Guest.objects.filter(owner=ticket.owner).order_by(F("parent").desc(nulls_first=True))
 
     ctx.update({
         'hash': hash,
